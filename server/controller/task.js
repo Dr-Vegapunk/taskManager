@@ -1,12 +1,12 @@
-const { Task }= require('../model/task')
+const Task = require('../model/task'); // Import the Task model
 
-
-// Create a new task
+// console.log("Task model loaded successfully", {Task}) // Log to confirm the model is loaded
+// // Create a new task
 
 exports.createTask = async (req, res) => {
-  const { title, description, status, userId } = req.body;
+  const { title, description, status, userId,dueDate } = req.body;
   try {
-      const task = await Task.create({ title, description, status, userId });
+      const task = await Task.create({ title, description, status, userId,dueDate });
       res.status(201).json({ message: 'Task created successfully', task });
   } catch (error) {
       console.error("Error creating task:", error); // Log the entire error object

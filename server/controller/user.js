@@ -1,4 +1,4 @@
-const {User}= require('../model/user') // Adjust path as needed
+const User= require('../model/user') // Adjust path as needed
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
@@ -14,6 +14,7 @@ exports.registerUser = async (req, res) => {
     });
     res.status(201||200).json({ message: 'User registered successfully', user });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Error registering user' });
   }
 };

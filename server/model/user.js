@@ -1,14 +1,14 @@
-const { Model } = require("sequelize")
+const { Sequelize, DataTypes, Model } = require('sequelize');
+const sequelize = new Sequelize('postgres::memory:');
 
-module.exports = (sequelize, DataTypes) => {
+
   class User extends Model {
     static associate(models) {
-      // Define association here
       User.hasMany(models.Task, {
         foreignKey: "userId",
         as: "tasks",
         onDelete: "CASCADE",
-      })
+      });
     }
   }
 
@@ -19,9 +19,12 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
-      name: {
+      username: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notEmpty: true,
+        },
       },
       email: {
         type: DataTypes.STRING,
@@ -29,11 +32,15 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         validate: {
           isEmail: true,
+          notEmpty: true,
         },
       },
       password: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notEmpty: true,
+        },
       },
       createdAt: {
         type: DataTypes.DATE,
@@ -52,7 +59,6 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "users",
       timestamps: true,
     },
-  )
+  );
 
-  return User
-}
+module.exports = User;

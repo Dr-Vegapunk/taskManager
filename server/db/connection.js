@@ -1,26 +1,30 @@
 const { Sequelize } = require('sequelize');
 
+const dbConfig = {
+  database: 'taskmanagerdb',
+  username: 'postgres',
+  password: 'Ishank@rki5167',
+  host: 'localhost',
+  port: 9000,
+  dialect: 'postgres',
+};
+
 const dbConnect = async () => {
-    // const { Sequelize } = require('sequelize');
+  const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
+    host: dbConfig.host,
+    port: dbConfig.port,
+    dialect: dbConfig.dialect,
+  });
 
-    const sequelize = new Sequelize('taskmanagerdb', 'postgres', 'Ishank@rki5167', {
-      host: 'localhost',
-      port: 9000,
-      dialect: 'postgres', // 👈 Important!
-    });
-    
-    module.exports = sequelize;
-    
+  try {
+  const x=  await sequelize.authenticate();
+    console.log('Database connection established successfully.',x);
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+    process.exit(1);
+  }
 
-    try {
-        await sequelize.authenticate();
-        console.log('Database connection established successfully.');
-    } catch (error) {
-        console.error('Unable to connect to the database:', error);
-        process.exit(1);
-    }
-
-    return sequelize;
+  return sequelize;
 };
 
 module.exports = dbConnect;
